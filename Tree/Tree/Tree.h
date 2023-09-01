@@ -23,7 +23,7 @@ public:
 	}
 
 public:
-	void Insert(Node* InNode, Node* RootNode = NULL)
+	void InsertNode(Node* InNode)
 	{
 		if (m_RootNode == NULL)
 		{
@@ -33,44 +33,19 @@ public:
 			return;
 		}
 
+		Insert(InNode, m_RootNode);
+	}
+
+public:
+	void Insert(Node* InNode, Node* RootNode = NULL)
+	{
 		//cout << strcmp(typeid(*InNode->Data).name(), "string") << endl;
 		string name = typeid(*InNode->Data).name();
 
 		if (name.find("int") != string::npos)
 		{
 			//cout << "int" << endl;
-			if (RootNode == NULL)
-			{
-				int result = IntDataOrder(m_RootNode->Data, InNode->Data);
-				if (result == 1)
-				{
-					if (m_RootNode->Left == NULL)
-					{
-						m_RootNode->Left = InNode;
-					}
-					else
-					{
-						Insert(InNode, m_RootNode->Left);
-					}
-
-					return;
-				}
-				else if (result == -1)
-				{
-					if (m_RootNode->Right == NULL)
-					{
-						m_RootNode->Right = InNode;
-					}
-					else
-					{
-						Insert(InNode, m_RootNode->Right);
-					}
-
-					return;
-				}
-
-				return;
-			}
+			
 			int result = IntDataOrder(RootNode->Data, InNode->Data);
 
 			if (result == 1)
@@ -109,8 +84,16 @@ public:
 
 	int IntDataOrder(T* RootData, T* InsertData)
 	{
+		if (*RootData < *InsertData)
+		{
+			return -1;
+		}
+		else if (*RootData > *InsertData)
+		{
+			return 1;
+		}
 
-		return 1;
+		return 0;
 	}
 
 	int StringDataOrder(T* RootData, T* InsertData)
