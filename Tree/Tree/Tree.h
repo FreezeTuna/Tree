@@ -5,6 +5,15 @@
 
 using namespace std;
 
+enum TreeOrder
+{
+	Preorder,
+	Inorder,
+	Postorder,
+	Levelorder,
+	Max
+};
+
 template<typename T>
 class BinaryTree
 {
@@ -36,7 +45,48 @@ public:
 		Insert(InNode, m_RootNode);
 	}
 
-public:
+	void RemoveAll()
+	{
+		if (m_RootNode == NULL)
+		{
+			return;
+		}
+
+		RemoveAllode(m_RootNode);
+	}
+
+	void PrintTree(TreeOrder InOrder)
+	{
+		if (m_RootNode == NULL)
+		{
+			return;
+		}
+
+		switch (InOrder)
+		{
+		case TreeOrder::Preorder:
+			cout << "Preorder!" << endl;
+			PrintPreorder(m_RootNode);
+			break;
+
+		case TreeOrder::Inorder:
+			cout << "Inorder!" << endl;
+			PrintInorder(m_RootNode);
+			break;
+
+		case TreeOrder::Postorder:
+			cout << "Postorder!" << endl;
+			PrintPostorder(m_RootNode);
+			break;
+
+		default:
+			break;
+		}
+
+		cout << endl;
+	}
+
+private:
 	void Insert(Node* InNode, Node* RootNode = NULL)
 	{
 		//cout << strcmp(typeid(*InNode->Data).name(), "string") << endl;
@@ -101,17 +151,7 @@ public:
 		return -9999;
 	}
 
-	void RemoveAll()
-	{
-		if (m_RootNode == NULL)
-		{
-			return;
-		}
-
-		RemoveNode(m_RootNode);
-	}
-
-	void RemoveNode(Node* InNode)
+	void RemoveAllode(Node* InNode)
 	{
 		if (InNode == NULL)
 		{
@@ -119,11 +159,49 @@ public:
 		}
 
 		Node* temp = InNode;
-		RemoveNode(InNode->Left);
-		RemoveNode(InNode->Right);
+		RemoveAllode(InNode->Left);
+		RemoveAllode(InNode->Right);
 
 		delete temp->Data;
 		delete temp;
+
+		m_RootNode = NULL;
+	}
+
+	void PrintPreorder(Node* InNode)
+	{
+		if (InNode == NULL)
+		{
+			return;
+		}
+
+		cout << *InNode->Data << " -> ";
+		PrintPreorder(InNode->Left);
+		PrintPreorder(InNode->Right);
+	}
+	
+	void PrintInorder(Node* InNode = NULL)
+	{
+		if (InNode == NULL)
+		{
+			return;
+		}
+
+		PrintPreorder(InNode->Left);
+		cout << *InNode->Data << " -> ";
+		PrintPreorder(InNode->Right);
+	}
+
+	void PrintPostorder(Node* InNode = NULL)
+	{
+		if (InNode == NULL)
+		{
+			return;
+		}
+
+		PrintPreorder(InNode->Left);
+		PrintPreorder(InNode->Right);
+		cout << *InNode->Data << " -> ";
 	}
 
 public:

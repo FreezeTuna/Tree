@@ -15,7 +15,7 @@ int main()
 	//	bTree->InsertNode(BTree::Create(&name));*/
 	//}
 
-	/*int* index = new int;
+	int* index = new int;
 	*index = 5;
 	bTree->InsertNode(BTree::Create(&index));
 
@@ -41,7 +41,13 @@ int main()
 	
 	index = new int;
 	*index = 8;
-	bTree->InsertNode(BTree::Create(&index));*/
+	bTree->InsertNode(BTree::Create(&index));
+
+	bTree->PrintTree(TreeOrder::Preorder);
+	bTree->PrintTree(TreeOrder::Inorder);
+	bTree->PrintTree(TreeOrder::Postorder);
+
+	bTree->RemoveAll();
 
 
 	
