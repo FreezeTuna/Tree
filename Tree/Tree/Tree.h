@@ -187,9 +187,9 @@ private:
 			return;
 		}
 
-		PrintPreorder(InNode->Left);
+		PrintInorder(InNode->Left);
 		cout << *InNode->Data << " -> ";
-		PrintPreorder(InNode->Right);
+		PrintInorder(InNode->Right);
 	}
 
 	void PrintPostorder(Node* InNode = NULL)
@@ -199,8 +199,8 @@ private:
 			return;
 		}
 
-		PrintPreorder(InNode->Left);
-		PrintPreorder(InNode->Right);
+		PrintPostorder(InNode->Left);
+		PrintPostorder(InNode->Right);
 		cout << *InNode->Data << " -> ";
 	}
 
