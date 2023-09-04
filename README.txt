@@ -13,3 +13,7 @@ Linked List를 이용하여 이진 트리 작성
 2023.09.03
 Inorder / Preorder / Postorder 탐색하여 노드 출력 함수 작성
 Remove All Node 함수 작성 (재귀함수)
+
+2023.09.04
+Remove Node / Find Node 함수 작성(재귀함수)
+->Remove Node의 경우 오른쪽 제일 작은 노드를 삭제 노드 위치로 설정함
