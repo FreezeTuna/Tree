@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -45,6 +46,22 @@ public:
 		Insert(InNode, m_RootNode);
 	}
 
+	void RemoveNode(T* InData)
+	{
+		if (m_RootNode == NULL)
+		{
+			return;
+		}
+
+		Node* remove = Remove(m_RootNode, InData);
+		if (remove == NULL)
+		{
+			cout << "Remove Node Fail!" << endl;
+			return;
+		}
+		cout << "Remove Node Succes!" << endl;
+	}
+
 	void RemoveAll()
 	{
 		if (m_RootNode == NULL)
@@ -53,6 +70,22 @@ public:
 		}
 
 		RemoveAllode(m_RootNode);
+	}
+
+	Node* FindNode(T* InData)
+	{
+		if (m_RootNode == NULL)
+		{
+			return NULL;
+		}
+
+		Node* find = Find(m_RootNode, InData);
+		if (find == NULL)
+		{
+			cout << "Remove Node Fail!" << endl;
+			return;
+		}
+		cout << "Remove Node Succes!" << endl;
 	}
 
 	void PrintTree(TreeOrder InOrder)
@@ -128,7 +161,35 @@ private:
 		}
 		else if (name.find("string") != string::npos)
 		{
-			cout << "string" << endl;
+			//cout << "string" << endl;
+			int result = StringDataOrder(RootNode->Data, InNode->Data);
+
+			if (result == 1)
+			{
+				if (RootNode->Left == NULL)
+				{
+					RootNode->Left = InNode;
+				}
+				else
+				{
+					Insert(InNode, RootNode->Left);
+				}
+
+				return;
+			}
+			else if (result == -1)
+			{
+				if (RootNode->Right == NULL)
+				{
+					RootNode->Right = InNode;
+				}
+				else
+				{
+					Insert(InNode, RootNode->Right);
+				}
+
+				return;
+			}
 		}
 	}
 
@@ -148,7 +209,78 @@ private:
 
 	int StringDataOrder(T* RootData, T* InsertData)
 	{
-		return -9999;
+		stringstream RootString;
+		stringstream InsertString;
+
+		RootString << *RootData;
+		InsertString << *InsertData;
+
+		if (RootString.str().compare(InsertString.str()) > 0)
+		{
+			return 1;
+		}
+		else if (RootString.str().compare(InsertString.str()) < 0)
+		{
+			return -1;
+		}
+
+		return 0;
+	}
+
+private:
+	Node* Remove(Node* InRoot, T* InData)
+	{
+		if (InRoot == NULL)
+		{
+			return NULL;
+		}
+
+		string name = typeid(*InData).name();
+		int result = -99999;
+		if (name.find("int") != string::npos)
+		{
+			result = IntDataOrder(InRoot->Data, InData);
+		}
+		else if (name.find("string") != string::npos)
+		{
+			result = StringDataOrder(InRoot->Data, InData);
+		}
+
+		if (result == 0)
+		{
+			Node* temp;
+			if (InRoot->Left != NULL && InRoot->Right != NULL)
+			{
+				temp = GetMinNode(InRoot->Right);
+				InRoot->Data = temp->Data;
+				InRoot->Right = Remove(InRoot->Right, temp->Data);
+			}
+			else
+			{
+				temp = InRoot;
+				if (InRoot->Left == NULL)
+				{
+					InRoot = InRoot->Right;
+				}
+				else if (InRoot->Right == NULL)
+				{
+					InRoot = InRoot->Left;
+				}
+
+				//delete temp->Data;
+				delete temp;
+			}
+		}
+		else if (result == 1)
+		{
+			InRoot->Left = Remove(InRoot->Left, InData);
+		}
+		else if (result == -1)
+		{
+			InRoot->Right = Remove(InRoot->Right, InData);
+		}
+
+		return InRoot;
 	}
 
 	void RemoveAllode(Node* InNode)
@@ -168,6 +300,42 @@ private:
 		m_RootNode = NULL;
 	}
 
+private:
+	Node* Find(Node* InRoot, T* InData)
+	{
+		if (InRoot == NULL)
+		{
+			return NULL;
+		}
+
+		string name = typeid(*InData).name();
+		int result = -99999;
+		if (name.find("int") != string::npos)
+		{
+			result = IntDataOrder(InRoot->Data, InData);
+		}
+		else if (name.find("string") != string::npos)
+		{
+			result = StringDataOrder(InRoot->Data, InData);
+		}
+		
+		if (result == 0)
+		{
+			return InRoot;
+		}
+		else if (result == 1)
+		{
+			Find(InRoot->Left, InData);
+		}
+		else if (result == -1)
+		{
+			Find(InRoot->Right, InData);
+		}
+
+		return NULL;
+	}
+
+private:
 	void PrintPreorder(Node* InNode)
 	{
 		if (InNode == NULL)
@@ -202,6 +370,41 @@ private:
 		PrintPostorder(InNode->Left);
 		PrintPostorder(InNode->Right);
 		cout << *InNode->Data << " -> ";
+	}
+
+private:
+	Node* GetMinNode(Node* InNode)
+	{
+		if (InNode == NULL)
+		{
+			return NULL;
+		}
+
+		if (InNode->Left != NULL)
+		{
+			GetMinNode(InNode->Left);
+		}
+		else
+		{
+			return InNode;
+		}
+	}
+
+	Node* GetMaxNode(Node* InNode)
+	{
+		if (InNode == NULL)
+		{
+			return NULL;
+		}
+
+		if (InNode->Right != NULL)
+		{
+			GetMinNode(InNode->Right);
+		}
+		else
+		{
+			return InNode;
+		}
 	}
 
 public:
