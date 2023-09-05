@@ -82,10 +82,22 @@ public:
 		Node* find = Find(m_RootNode, InData);
 		if (find == NULL)
 		{
-			cout << "Remove Node Fail!" << endl;
+			cout << "Find Node Fail!" << endl;
+			return NULL;
+		}
+		cout << "Find Node Succes!" << endl;
+
+		return find;
+	}
+
+	void GetNodeBF()
+	{
+		if (m_RootNode == NULL)
+		{
 			return;
 		}
-		cout << "Remove Node Succes!" << endl;
+
+		GetBalanceFactor(m_RootNode);
 	}
 
 	void PrintTree(TreeOrder InOrder)
@@ -331,8 +343,6 @@ private:
 		{
 			Find(InRoot->Right, InData);
 		}
-
-		return NULL;
 	}
 
 private:
@@ -404,6 +414,64 @@ private:
 		else
 		{
 			return InNode;
+		}
+	}
+
+private:
+	int GetBalanceFactor(Node* InNode)
+	{
+		if (InNode == NULL)
+		{
+			return -999;
+		}
+
+		int left = 0, right = 0;
+		int result = 0;
+
+		result = GetBalanceFactor(InNode->Left);
+
+		if (result == -999)
+		{
+			left = 0;
+		}
+		else
+		{
+			if (result < 0)
+			{
+				result = result * -1;
+			}
+
+			left = result;
+			left += 1;
+		}
+
+		result = GetBalanceFactor(InNode->Right);
+
+		if (result == -999)
+		{
+			right = 0;
+		}
+		else
+		{
+			if (result > 0)
+			{
+				result = result * -1;
+			}
+
+			right = result;
+			right -= 1;
+		}
+
+		//cout << left << "  " << right << endl;
+		cout << *InNode->Data << " : " << left + right << endl;
+
+		if (abs(left) < abs(right))
+		{
+			return abs(right);
+		}
+		else if (abs(left) > abs(right))
+		{
+			return abs(left);
 		}
 	}
 
