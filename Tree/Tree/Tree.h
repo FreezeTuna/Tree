@@ -44,6 +44,8 @@ public:
 		}
 
 		Insert(InNode, m_RootNode);
+		SetBalanceFactor(m_RootNode);
+		ReplaceNode(m_RootNode);
 	}
 
 	void RemoveNode(T* InData)
@@ -90,14 +92,14 @@ public:
 		return find;
 	}
 
-	void GetNodeBF()
+	void SetNodeBF()
 	{
 		if (m_RootNode == NULL)
 		{
 			return;
 		}
 
-		GetBalanceFactor(m_RootNode);
+		SetBalanceFactor(m_RootNode);
 	}
 
 	void PrintTree(TreeOrder InOrder)
@@ -135,15 +137,17 @@ private:
 	void Insert(Node* InNode, Node* RootNode = NULL)
 	{
 		//cout << strcmp(typeid(*InNode->Data).name(), "string") << endl;
-		string name = typeid(*InNode->Data).name();
 
-		if (name.find("int") != string::npos)
-		{
-			//cout << "int" << endl;
-			
-			int result = IntDataOrder(RootNode->Data, InNode->Data);
+		int dataOrder = GetDataOrder(RootNode, InNode->Data);
+		//string name = typeid(*InNode->Data).name();
 
-			if (result == 1)
+		//if (name.find("int") != string::npos)
+		//{
+		//	//cout << "int" << endl;
+		//	
+		//	int result = IntDataOrder(RootNode->Data, InNode->Data);
+
+			if (dataOrder == 1)
 			{
 				if (RootNode->Left == NULL)
 				{
@@ -156,7 +160,7 @@ private:
 
 				return;
 			}
-			else if (result == -1)
+			else if (dataOrder == -1)
 			{
 				if (RootNode->Right == NULL)
 				{
@@ -170,39 +174,39 @@ private:
 				return;
 			}
 
-		}
-		else if (name.find("string") != string::npos)
-		{
-			//cout << "string" << endl;
-			int result = StringDataOrder(RootNode->Data, InNode->Data);
+		//}
+		//else if (name.find("string") != string::npos)
+		//{
+		//	//cout << "string" << endl;
+		//	int result = StringDataOrder(RootNode->Data, InNode->Data);
 
-			if (result == 1)
-			{
-				if (RootNode->Left == NULL)
-				{
-					RootNode->Left = InNode;
-				}
-				else
-				{
-					Insert(InNode, RootNode->Left);
-				}
+		//	if (result == 1)
+		//	{
+		//		if (RootNode->Left == NULL)
+		//		{
+		//			RootNode->Left = InNode;
+		//		}
+		//		else
+		//		{
+		//			Insert(InNode, RootNode->Left);
+		//		}
 
-				return;
-			}
-			else if (result == -1)
-			{
-				if (RootNode->Right == NULL)
-				{
-					RootNode->Right = InNode;
-				}
-				else
-				{
-					Insert(InNode, RootNode->Right);
-				}
+		//		return;
+		//	}
+		//	else if (result == -1)
+		//	{
+		//		if (RootNode->Right == NULL)
+		//		{
+		//			RootNode->Right = InNode;
+		//		}
+		//		else
+		//		{
+		//			Insert(InNode, RootNode->Right);
+		//		}
 
-				return;
-			}
-		}
+		//		return;
+		//	}
+		//}
 	}
 
 	int IntDataOrder(T* RootData, T* InsertData)
@@ -247,7 +251,7 @@ private:
 			return NULL;
 		}
 
-		string name = typeid(*InData).name();
+		/*string name = typeid(*InData).name();
 		int result = -99999;
 		if (name.find("int") != string::npos)
 		{
@@ -256,9 +260,10 @@ private:
 		else if (name.find("string") != string::npos)
 		{
 			result = StringDataOrder(InRoot->Data, InData);
-		}
+		}*/
+		int dataOrder = GetDataOrder();
 
-		if (result == 0)
+		if (dataOrder == 0)
 		{
 			Node* temp;
 			if (InRoot->Left != NULL && InRoot->Right != NULL)
@@ -283,11 +288,11 @@ private:
 				delete temp;
 			}
 		}
-		else if (result == 1)
+		else if (dataOrder == 1)
 		{
 			InRoot->Left = Remove(InRoot->Left, InData);
 		}
-		else if (result == -1)
+		else if (dataOrder == -1)
 		{
 			InRoot->Right = Remove(InRoot->Right, InData);
 		}
@@ -320,7 +325,7 @@ private:
 			return NULL;
 		}
 
-		string name = typeid(*InData).name();
+		/*string name = typeid(*InData).name();
 		int result = -99999;
 		if (name.find("int") != string::npos)
 		{
@@ -329,17 +334,19 @@ private:
 		else if (name.find("string") != string::npos)
 		{
 			result = StringDataOrder(InRoot->Data, InData);
-		}
+		}*/
+
+		int dataOrder = GetDataOrder();
 		
-		if (result == 0)
+		if (dataOrder == 0)
 		{
 			return InRoot;
 		}
-		else if (result == 1)
+		else if (dataOrder == 1)
 		{
 			Find(InRoot->Left, InData);
 		}
-		else if (result == -1)
+		else if (dataOrder == -1)
 		{
 			Find(InRoot->Right, InData);
 		}
@@ -418,7 +425,7 @@ private:
 	}
 
 private:
-	int GetBalanceFactor(Node* InNode)
+	int SetBalanceFactor(Node* InNode)
 	{
 		if (InNode == NULL)
 		{
@@ -428,7 +435,7 @@ private:
 		int left = 0, right = 0;
 		int result = 0;
 
-		result = GetBalanceFactor(InNode->Left);
+		result = SetBalanceFactor(InNode->Left);
 
 		if (result == -999)
 		{
@@ -445,7 +452,7 @@ private:
 			left += 1;
 		}
 
-		result = GetBalanceFactor(InNode->Right);
+		result = SetBalanceFactor(InNode->Right);
 
 		if (result == -999)
 		{
@@ -464,21 +471,216 @@ private:
 
 		//cout << left << "  " << right << endl;
 		cout << *InNode->Data << " : " << left + right << endl;
+		InNode->BF = left + right;
 
 		if (abs(left) < abs(right))
 		{
 			return abs(right);
 		}
-		else if (abs(left) > abs(right))
+		/*else if (abs(left) > abs(right))
+		{*/
+		return abs(left);
+		//}
+	}
+
+	void ReplaceNode(Node* InNode)
+	{
+		if (InNode == NULL)
 		{
-			return abs(left);
+			return;
 		}
+
+		ReplaceNode(InNode->Left);
+		ReplaceNode(InNode->Right);
+
+		if (abs(InNode->BF) > 1)
+		{
+			if (*InNode->Data == 3)
+			{
+				cout << "3" << endl;
+			}
+			if (InNode->BF > 0)
+			{
+				if (abs(InNode->BF) == abs(InNode->Left->BF))
+				{
+					ReplaceNode(InNode->Left);
+					SetBalanceFactor(m_RootNode);
+					return;
+				}
+
+				if (InNode->Left->BF > 0)
+				{
+					Node* parentNode = GetParentNode(m_RootNode, InNode->Data);
+					RightRotation(InNode, parentNode);
+				}
+				else if (InNode->Left->BF < 0)
+				{
+					LeftRotation(InNode->Left, InNode);
+
+					Node* parentNode = GetParentNode(m_RootNode, InNode->Data);
+					RightRotation(InNode, parentNode);
+				}
+			}
+			else if (InNode->BF < 0)
+			{
+				if (abs(InNode->BF) == abs(InNode->Right->BF))
+				{
+					ReplaceNode(InNode->Right);
+					SetBalanceFactor(m_RootNode);
+					return;
+				}
+
+				if (InNode->Right->BF < 0)
+				{
+					Node* parentNode = GetParentNode(m_RootNode, InNode->Data);
+					LeftRotation(InNode, parentNode);
+				}
+				else if (InNode->Right->BF > 0)
+				{
+					RightRotation(InNode->Right, InNode);
+
+					Node* parentNode = GetParentNode(m_RootNode, InNode->Data);
+					LeftRotation(InNode, parentNode);
+				}
+			}
+		}
+
+		SetBalanceFactor(m_RootNode);
+		cout << endl;
+	}
+
+	void LeftRotation(Node* InNode, Node* InRoot = NULL)
+	{
+		if (InNode == NULL)
+		{
+			return;
+		}
+
+		Node* tempInNodeRight = InNode->Right;
+		Node* tempInNode = InNode;
+
+		if (InNode->Right != NULL)
+		{
+			Node* temp = InNode->Right->Left;
+
+			InNode->Right->Left = InNode;
+			InNode->Right = temp;
+		}
+
+
+		if (InRoot != NULL)
+		{
+			// RR의 회전 경우
+			if (InNode->Right == NULL)
+			{
+				InRoot->Right = tempInNodeRight;
+			}
+			// RL의 회전 경우
+			else
+			{
+				InRoot->Left = tempInNodeRight;
+			}
+		}
+		else if (tempInNode == m_RootNode)
+		{
+			m_RootNode = tempInNodeRight;
+		}
+	}
+	
+	void RightRotation(Node* InNode, Node* InRoot = NULL)
+	{
+		if (InNode == NULL)
+		{
+			return;
+		}
+		
+		Node* tempInNodeLeft = InNode->Left;
+		Node* tempInNode = InNode;
+
+		if (InNode->Left != NULL)
+		{
+			Node* temp = InNode->Left->Right;
+
+			InNode->Left->Right = InNode;
+			InNode->Left = temp;
+		}
+
+		if (InRoot != NULL)
+		{
+			//	LL의 회전 경우
+			if (InNode->Left == NULL)
+			{
+				InRoot->Left = tempInNodeLeft;
+			}
+			//	LR의 회전 경우
+			else
+			{
+				InRoot->Right = tempInNodeLeft;
+			}
+		}
+		else if (tempInNode == m_RootNode)
+		{
+			m_RootNode = tempInNodeLeft;
+		}
+	}
+
+private:
+	int GetDataOrder(Node* InRoot, T* InData)
+	{
+		string name = typeid(*InData).name();
+		int result = -99999;
+		if (name.find("int") != string::npos)
+		{
+			result = IntDataOrder(InRoot->Data, InData);
+		}
+		else if (name.find("string") != string::npos)
+		{
+			result = StringDataOrder(InRoot->Data, InData);
+		}
+
+		return result;
+	}
+
+	Node* GetParentNode(Node* InRoot, T* InData)
+	{
+		if (InRoot == NULL)
+		{
+			return NULL;
+		}
+
+		int dataOrder = GetDataOrder(InRoot, InData);
+
+		if (dataOrder == 1)
+		{
+			if (GetDataOrder(InRoot->Left, InData) == 0)
+			{
+				return InRoot;
+			}
+			else
+			{
+				GetParentNode(InRoot->Left, InData);
+			}
+		}
+		else if (dataOrder == -1)
+		{
+			if (GetDataOrder(InRoot->Right, InData) == 0)
+			{
+				return InRoot;
+			}
+			else
+			{
+				GetParentNode(InRoot->Right, InData);
+			}
+		}
+
+		return NULL;
 	}
 
 public:
 	struct Node
 	{
 		T* Data;
+		int BF = -99;
 		Node* Left;
 		Node* Right;
 	};

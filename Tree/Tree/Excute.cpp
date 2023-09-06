@@ -50,7 +50,7 @@ int main()
 
 	index = new int;
 	*index = 448;
-	bTree->InsertNode(BTree::Create(&index))*/;
+	bTree->InsertNode(BTree::Create(&index));*/
 
 	/*int* index = new int;
 	*index = 5;
@@ -92,9 +92,9 @@ int main()
 	bTree->PrintTree(TreeOrder::Inorder);
 	bTree->PrintTree(TreeOrder::Postorder);
 
-	bTree->GetNodeBF();
+	//bTree->SetNodeBF();
 
-	bTree->RemoveAll();
+	//bTree->RemoveAll();
 
 	/*string* name = new string;
 	*name = "g";
