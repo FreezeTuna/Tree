@@ -20,3 +20,8 @@ Remove Node / Find Node 함수 작성(재귀함수)
 
 2023.09.05
 BF(Balance Factor) 함수 작성
+
+2023.09.06
+Left Rotation / Right Rotation 함수작성
+부모 노드 가져오는 함수 작성
+BF에 따라 회전 함수를 선택하는 ReplaceNode 함수 작성
