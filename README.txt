@@ -25,3 +25,7 @@ BF(Balance Factor) 함수 작성
 Left Rotation / Right Rotation 함수작성
 부모 노드 가져오는 함수 작성
 BF에 따라 회전 함수를 선택하는 ReplaceNode 함수 작성
+
+2023.09.07
+Node Rotation 시 부모의 자식 노드 설정 버그 수정
+코드 구조 리팩토링

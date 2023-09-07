@@ -1,20 +1,20 @@
 ﻿#include "Tree.h"
 
 //typedef BinaryTree<int> BTree;
-typedef BinaryTree<int> BTree;
+typedef BinaryTree<string> BTree;
 
 int main()
 {
 	BTree* bTree = new BTree;
-	for (int i = 1; i <= 7; i++)
-	{
-		int* index = new int;
-		*index = *(&i);
-		bTree->InsertNode(BTree::Create(&index));
-		/*string* name = new string;
-		*name = "string";
-		bTree->InsertNode(BTree::Create(&name));*/
-	}
+	//for (int i = 1; i <= 7; i++)
+	//{
+	//	int* index = new int;
+	//	*index = *(&i);
+	//	bTree->InsertNode(BTree::Create(&index));
+	//	/*string* name = new string;
+	//	*name = "string";
+	//	bTree->InsertNode(BTree::Create(&name));*/
+	//}
 
 	/*int* index = new int;
 	*index = 250;
@@ -88,15 +88,15 @@ int main()
 	*index = 10;
 	bTree->InsertNode(BTree::Create(&index));*/
 
-	bTree->PrintTree(TreeOrder::Preorder);
+	/*bTree->PrintTree(TreeOrder::Preorder);
 	bTree->PrintTree(TreeOrder::Inorder);
-	bTree->PrintTree(TreeOrder::Postorder);
+	bTree->PrintTree(TreeOrder::Postorder);*/
 
 	//bTree->SetNodeBF();
 
 	//bTree->RemoveAll();
 
-	/*string* name = new string;
+	string* name = new string;
 	*name = "g";
 	bTree->InsertNode(BTree::Create(&name));
 
@@ -130,17 +130,13 @@ int main()
 
 	name = new string;
 	*name = "a";
-	bTree->FindNode(name);*/
+	bTree->FindNode(name);
 
-	/*bTree->PrintTree(TreeOrder::Preorder);
+	bTree->PrintTree(TreeOrder::Preorder);
 	bTree->PrintTree(TreeOrder::Inorder);
 	bTree->PrintTree(TreeOrder::Postorder);
 
-	bTree->GetNodeBF();
-
-	bTree->RemoveAll();*/
-
-
+	bTree->RemoveAll();
 	
 	cout << "end" << endl;
 }

@@ -136,77 +136,34 @@ public:
 private:
 	void Insert(Node* InNode, Node* RootNode = NULL)
 	{
-		//cout << strcmp(typeid(*InNode->Data).name(), "string") << endl;
-
 		int dataOrder = GetDataOrder(RootNode, InNode->Data);
-		//string name = typeid(*InNode->Data).name();
 
-		//if (name.find("int") != string::npos)
-		//{
-		//	//cout << "int" << endl;
-		//	
-		//	int result = IntDataOrder(RootNode->Data, InNode->Data);
-
-			if (dataOrder == 1)
+		if (dataOrder == 1)
+		{
+			if (RootNode->Left == NULL)
 			{
-				if (RootNode->Left == NULL)
-				{
-					RootNode->Left = InNode;
-				}
-				else
-				{
-					Insert(InNode, RootNode->Left);
-				}
-
-				return;
+				RootNode->Left = InNode;
 			}
-			else if (dataOrder == -1)
+			else
 			{
-				if (RootNode->Right == NULL)
-				{
-					RootNode->Right = InNode;
-				}
-				else
-				{
-					Insert(InNode, RootNode->Right);
-				}
-
-				return;
+				Insert(InNode, RootNode->Left);
 			}
 
-		//}
-		//else if (name.find("string") != string::npos)
-		//{
-		//	//cout << "string" << endl;
-		//	int result = StringDataOrder(RootNode->Data, InNode->Data);
+			return;
+		}
+		else if (dataOrder == -1)
+		{
+			if (RootNode->Right == NULL)
+			{
+				RootNode->Right = InNode;
+			}
+			else
+			{
+				Insert(InNode, RootNode->Right);
+			}
 
-		//	if (result == 1)
-		//	{
-		//		if (RootNode->Left == NULL)
-		//		{
-		//			RootNode->Left = InNode;
-		//		}
-		//		else
-		//		{
-		//			Insert(InNode, RootNode->Left);
-		//		}
-
-		//		return;
-		//	}
-		//	else if (result == -1)
-		//	{
-		//		if (RootNode->Right == NULL)
-		//		{
-		//			RootNode->Right = InNode;
-		//		}
-		//		else
-		//		{
-		//			Insert(InNode, RootNode->Right);
-		//		}
-
-		//		return;
-		//	}
-		//}
+			return;
+		}
 	}
 
 	int IntDataOrder(T* RootData, T* InsertData)
@@ -251,17 +208,7 @@ private:
 			return NULL;
 		}
 
-		/*string name = typeid(*InData).name();
-		int result = -99999;
-		if (name.find("int") != string::npos)
-		{
-			result = IntDataOrder(InRoot->Data, InData);
-		}
-		else if (name.find("string") != string::npos)
-		{
-			result = StringDataOrder(InRoot->Data, InData);
-		}*/
-		int dataOrder = GetDataOrder();
+		int dataOrder = GetDataOrder(InRoot, InData);
 
 		if (dataOrder == 0)
 		{
@@ -325,18 +272,7 @@ private:
 			return NULL;
 		}
 
-		/*string name = typeid(*InData).name();
-		int result = -99999;
-		if (name.find("int") != string::npos)
-		{
-			result = IntDataOrder(InRoot->Data, InData);
-		}
-		else if (name.find("string") != string::npos)
-		{
-			result = StringDataOrder(InRoot->Data, InData);
-		}*/
-
-		int dataOrder = GetDataOrder();
+		int dataOrder = GetDataOrder(InRoot, InData);
 		
 		if (dataOrder == 0)
 		{
@@ -495,19 +431,8 @@ private:
 
 		if (abs(InNode->BF) > 1)
 		{
-			if (*InNode->Data == 3)
-			{
-				cout << "3" << endl;
-			}
 			if (InNode->BF > 0)
 			{
-				if (abs(InNode->BF) == abs(InNode->Left->BF))
-				{
-					ReplaceNode(InNode->Left);
-					SetBalanceFactor(m_RootNode);
-					return;
-				}
-
 				if (InNode->Left->BF > 0)
 				{
 					Node* parentNode = GetParentNode(m_RootNode, InNode->Data);
@@ -523,13 +448,6 @@ private:
 			}
 			else if (InNode->BF < 0)
 			{
-				if (abs(InNode->BF) == abs(InNode->Right->BF))
-				{
-					ReplaceNode(InNode->Right);
-					SetBalanceFactor(m_RootNode);
-					return;
-				}
-
 				if (InNode->Right->BF < 0)
 				{
 					Node* parentNode = GetParentNode(m_RootNode, InNode->Data);
@@ -571,7 +489,7 @@ private:
 		if (InRoot != NULL)
 		{
 			// RR의 회전 경우
-			if (InNode->Right == NULL)
+			if (InNode == InRoot->Right)
 			{
 				InRoot->Right = tempInNodeRight;
 			}
@@ -608,14 +526,14 @@ private:
 		if (InRoot != NULL)
 		{
 			//	LL의 회전 경우
-			if (InNode->Left == NULL)
+			if (InNode == InRoot->Right)
 			{
-				InRoot->Left = tempInNodeLeft;
+				InRoot->Right = tempInNodeLeft;
 			}
 			//	LR의 회전 경우
 			else
 			{
-				InRoot->Right = tempInNodeLeft;
+				InRoot->Left = tempInNodeLeft;
 			}
 		}
 		else if (tempInNode == m_RootNode)
@@ -672,8 +590,10 @@ private:
 				GetParentNode(InRoot->Right, InData);
 			}
 		}
-
-		return NULL;
+		else
+		{
+			return NULL;
+		}
 	}
 
 public:
